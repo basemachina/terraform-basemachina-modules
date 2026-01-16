@@ -1,7 +1,6 @@
-# BaseMachina Bridge Terraform サンプル
+# BaseMachina Terraform Modules
 
-BaseMachina BridgeをAWS・GCPクラウド環境にデプロイするためのTerraformサンプルです。
-このリポジトリをフォークまたは参考にして、自社環境へのBridgeデプロイにご利用ください。
+BaseMachina BridgeをAWS・GCPクラウド環境に簡単にデプロイするためのTerraformモジュール集です。
 
 ## プロジェクト概要
 
