@@ -73,8 +73,7 @@ Google Cloud RunでBaseMachina bridgeをデプロイするための包括的なT
 2. WHEN HTTPS通信が有効化されているとき、THEN Security ConfigurationはHTTP通信をHTTPSにリダイレクトすること
 3. WHEN Cloud SQLに接続するとき、THEN Network ConfigurationはServerless VPC Accessコネクタを使用してプライベートIP接続を確立すること
 4. WHEN サービスアカウントが作成されるとき、THEN IAM Configurationは最小権限の原則に従った権限のみを付与すること
-5. WHEN 機密情報が設定されるとき、THEN Security ConfigurationはSecret Managerを使用して環境変数を管理すること
-6. WHEN インターネットアクセスが必要なとき、THEN Network ConfigurationはBridgeから外部インターネット（BaseMachina API）へのアクセスを許可すること
+5. WHEN インターネットアクセスが必要なとき、THEN Network ConfigurationはBridgeから外部インターネット（BaseMachina API）へのアクセスを許可すること
 7. WHEN Cloud Runサービスが実行されるとき、THEN Security Configurationは認証されていないInvokeリクエストを拒否すること（Ingress設定による制御）
 8. WHEN ログが出力されるとき、THEN Logging ConfigurationはCloud Loggingに自動的にコンテナログを送信すること
 

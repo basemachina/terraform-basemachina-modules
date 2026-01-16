@@ -51,7 +51,6 @@
 2. WHEN タスク定義が作成される THEN `requires_compatibilities`は`["FARGATE"]`でなければならない
 3. WHEN タスク定義にCPUとメモリを設定する THEN `cpu`と`memory`は`var.cpu`と`var.memory`から取得しなければならない
 4. WHEN タスク定義にIAMロールを割り当てる THEN `execution_role_arn`は`aws_iam_role.task_execution.arn`でなければならない
-5. WHEN タスク定義にIAMロールを割り当てる THEN `task_role_arn`は`aws_iam_role.task.arn`でなければならない
 6. WHEN コンテナ定義が作成される THEN イメージは`public.ecr.aws/basemachina/bridge`でなければならない
 7. WHEN コンテナ定義に環境変数を設定する THEN 以下の環境変数が含まれなければならない：
    - `FETCH_INTERVAL`: `var.fetch_interval`
@@ -114,9 +113,7 @@
 2. WHEN タスク実行ロールが作成される THEN `assume_role_policy`のプリンシパルは`ecs-tasks.amazonaws.com`でなければならない
 3. WHEN タスク実行ロールが作成される THEN `aws_iam_role_policy_attachment`で`arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy`がアタッチされなければならない
 4. WHEN タスク実行ロールにCloudWatch Logs権限を追加する THEN インラインポリシーまたはカスタムポリシーで`logs:CreateLogStream`と`logs:PutLogEvents`が許可されなければならない
-5. WHEN `aws_iam_role`（タスクロール）が作成される THEN リソース名は`task`でなければならない（outputs.tfとの整合性）
-6. WHEN タスクロールが作成される THEN `assume_role_policy`のプリンシパルは`ecs-tasks.amazonaws.com`でなければならない
-7. WHEN タスクロールが作成される THEN 最小権限の原則に従い、現時点では追加のポリシーをアタッチしないでなければならない（将来の拡張用）
+Note: タスクロール（`aws_iam_role.task`）は削除されました。BridgeはAWS SDKを使用しないため、アプリケーション用のIAMロールは不要です。
 
 ### Requirement 7: CloudWatch Logsの実装
 **Objective:** モジュール開発者として、Bridgeコンテナのログを一元管理するためのロググループを実装したい。これにより、outputs.tfで参照されている`aws_cloudwatch_log_group.bridge`が正しく動作する。
@@ -142,7 +139,6 @@
 7. WHEN outputs.tfが`aws_security_group.bridge.id`を参照する THEN `aws_security_group`リソース（リソース名`bridge`）が定義されなければならない
 8. WHEN outputs.tfが`aws_cloudwatch_log_group.bridge.name`を参照する THEN `aws_cloudwatch_log_group`リソース（リソース名`bridge`）が定義されなければならない
 9. WHEN outputs.tfが`aws_iam_role.task_execution.arn`を参照する THEN `aws_iam_role`リソース（リソース名`task_execution`）が定義されなければならない
-10. WHEN outputs.tfが`aws_iam_role.task.arn`を参照する THEN `aws_iam_role`リソース（リソース名`task`）が定義されなければならない
 
 ### Requirement 9: Exampleの簡略化
 **Objective:** モジュールユーザーとして、モジュールを呼び出すだけで完全なBridge環境がデプロイされることを確認したい。これにより、セットアップ手順が最小限になる。
@@ -178,7 +174,6 @@
    - `bridge_security_group_id`
    - `cloudwatch_log_group_name`
    - `task_execution_role_arn`
-   - `task_role_arn`
 5. WHEN テストが完了する THEN `terraform destroy`で全リソースがクリーンアップされなければならない
 
 ### Requirement 11: variables.tfとの整合性確認

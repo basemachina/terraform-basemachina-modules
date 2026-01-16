@@ -37,8 +37,8 @@
   - Bridge用のサービスアカウントを作成
   - Cloud SQL Client権限を付与（cloudsql.client）
   - Cloud Logging書き込み権限を付与（logging.logWriter）
-  - Secret Manager読み取り権限を付与（secretmanager.secretAccessor、オプション）
   - 最小権限の原則に従った権限設定を実装
+  - Note: Secret Manager権限は削除されました（BridgeはSecret Managerを使用しないため）
   - _Requirements: 5.4, 6.2_
 
 - [x] 2.2 Cloud Runサービスの作成と環境変数設定

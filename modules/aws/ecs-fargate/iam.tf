@@ -57,27 +57,3 @@ resource "aws_iam_role_policy" "cloudwatch_logs" {
   })
 }
 
-# ========================================
-# タスクロール (Task Role)
-# ========================================
-# Bridgeコンテナ内のアプリケーションがAWSサービスにアクセスする際の権限を提供
-# 現時点では最小権限（将来的な拡張用）
-
-resource "aws_iam_role" "task" {
-  name_prefix = "${var.name_prefix}-bridge-task-"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-      }
-    ]
-  })
-
-  tags = var.tags
-}

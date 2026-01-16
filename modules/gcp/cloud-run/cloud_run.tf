@@ -30,15 +30,6 @@ resource "google_project_iam_member" "log_writer" {
   member  = "serviceAccount:${google_service_account.bridge.email}"
 }
 
-# Secret Manager読み取り権限（オプション）
-# 環境変数をSecret Managerから取得する場合に必要
-resource "google_project_iam_member" "secret_accessor" {
-  count   = var.vpc_connector_id != null ? 1 : 0
-  project = var.project_id
-  role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:${google_service_account.bridge.email}"
-}
-
 # ========================================
 # Cloud Run Service
 # ========================================

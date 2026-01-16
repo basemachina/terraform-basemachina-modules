@@ -65,7 +65,6 @@ graph TB
             end
         end
 
-        SM[Secret Manager]
         LOG[Cloud Logging]
         IAM[Service Account<br/>Minimal Permissions]
     end
@@ -77,7 +76,6 @@ graph TB
     DNS -.->|Domain Resolution| LB
     CR -->|VPC Connector| VPC
     VPC -->|Private IP| SQL
-    CR -.->|Environment Variables| SM
     CR -.->|Container Logs| LOG
     CR -.->|Identity| IAM
     CR -->|Fetch Public Keys| BM
@@ -94,7 +92,6 @@ graph TB
 - **Cloud DNS**: DNS管理（Route53と同等）
 - **Serverless VPC Access Connector**: VPCとのプライベート接続
 - **Cloud SQL**: マネージドPostgreSQLデータベース（RDSと同等）
-- **Secret Manager**: 機密情報管理（AWS Secrets Managerと同等）
 - **Cloud Logging**: ログ管理（CloudWatch Logsと同等）
 
 **維持される技術**:
@@ -283,7 +280,6 @@ graph TB
 - **Inbound**: Load Balancer Module（Serverless NEG経由でトラフィックを受信）
 - **Outbound**:
   - Cloud SQL Module（Direct VPC Egress経由でデータベース接続）
-  - Secret Manager（環境変数の機密情報取得、オプション）
   - Cloud Logging（コンテナログ送信）
   - BaseMachina API（認証用公開鍵取得）
 - **External**:
@@ -1208,7 +1204,6 @@ Terraformモジュールの単体テストでは、以下の項目を検証し�
 2. **Cloud RunとCloud SQLの統合**: Direct VPC Egress経由のデータベース接続
 3. **Load BalancerとCloud DNSの統合**: ドメイン名解決とSSL証明書発行
 4. **Cloud ArmorとLoad Balancerの統合**: IPベースのアクセス制御
-5. **Secret Managerとの統合**: 環境変数の機密情報取得（オプション）
 
 ### E2E Tests
 
@@ -1241,8 +1236,8 @@ Terraformモジュールの単体テストでは、以下の項目を検証し�
 1. **不正アクセス**: Cloud Armorによるソース IP制限でBaseMachina以外のアクセスをブロック
 2. **中間者攻撃（MITM）**: Google-managed SSL証明書によるHTTPS通信の強制
 3. **データ漏洩**: Cloud SQLのプライベートIP接続により、データベースをインターネットから隔離
-4. **過剰な権限**: サービスアカウントに最小権限の原則を適用（Cloud Run Invoker、Cloud SQL Clientのみ）
-5. **機密情報の露出**: TENANT_IDをsensitiveとして扱い、Secret Manager統合をオプション提供
+4. **過剰な権限**: サービスアカウントに最小権限の原則を適用（Cloud Run Invoker、Cloud SQL Client、Log Writerのみ）
+5. **機密情報の露出**: TENANT_IDをsensitiveとして扱い、Terraformの状態ファイルで暗号化
 
 ### Authentication and Authorization
 
@@ -1267,23 +1262,16 @@ resource "google_project_iam_member" "log_writer" {
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.bridge.email}"
 }
-
-# Secret Manager読み取り権限（オプション）
-resource "google_project_iam_member" "secret_accessor" {
-  count   = var.use_secret_manager ? 1 : 0
-  project = var.project_id
-  role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:${google_service_account.bridge.email}"
-}
 ```
+
+> **Note**: BridgeはSecret Managerを使用しないため、`roles/secretmanager.secretAccessor` 権限は不要です。
 
 ### Data Protection and Privacy
 
 1. **転送中のデータ**: HTTPS通信による暗号化（TLS 1.2以上）
 2. **保存データ**: Cloud SQLの自動暗号化（Google-managed encryption keys）
-3. **機密情報管理**: Secret Managerによる環境変数の暗号化保存
-4. **ログデータ**: Cloud Loggingでの自動暗号化とアクセス制御
-5. **プライベートネットワーク**: Cloud SQLへのプライベートIP接続
+3. **ログデータ**: Cloud Loggingでの自動暗号化とアクセス制御
+4. **プライベートネットワーク**: Cloud SQLへのプライベートIP接続
 
 ### Compliance Requirements
 

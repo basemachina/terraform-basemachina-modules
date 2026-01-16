@@ -65,17 +65,12 @@ output "cloudwatch_log_group_name" {
 # ========================================
 # IAM Role Outputs
 # ========================================
-# タスク実行ロールとタスクロールのARN
+# タスク実行ロールのARN
 # 権限の追加や参照に使用
 
 output "task_execution_role_arn" {
   description = "タスク実行ロールARN（権限管理用）"
   value       = aws_iam_role.task_execution.arn
-}
-
-output "task_role_arn" {
-  description = "タスクロールARN（アプリケーション権限管理用）"
-  value       = aws_iam_role.task.arn
 }
 
 # ========================================
