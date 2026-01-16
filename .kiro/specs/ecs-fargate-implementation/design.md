@@ -459,7 +459,6 @@ resource "aws_ecs_task_definition" "bridge" {
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.task_execution.arn
-  task_role_arn            = aws_iam_role.task.arn
 
   container_definitions = jsonencode([
     {
@@ -778,7 +777,6 @@ resource "aws_cloudwatch_log_group" "bridge" {
 | `bridge_security_group_id` | BridgeセキュリティグループID | `aws_security_group.bridge.id` |
 | `cloudwatch_log_group_name` | CloudWatch Logsロググループ名 | `aws_cloudwatch_log_group.bridge.name` |
 | `task_execution_role_arn` | タスク実行ロールARN | `aws_iam_role.task_execution.arn` |
-| `task_role_arn` | タスクロールARN | `aws_iam_role.task.arn` |
 
 ## Error Handling
 
