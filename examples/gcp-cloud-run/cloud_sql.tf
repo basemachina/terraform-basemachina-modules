@@ -9,7 +9,7 @@ resource "random_id" "db_name_suffix" {
 
 resource "google_sql_database_instance" "main" {
   name             = "${var.service_name}-db-${random_id.db_name_suffix.hex}"
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_16"
   region           = var.region
   project          = var.project_id
 
