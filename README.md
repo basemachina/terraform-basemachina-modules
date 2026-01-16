@@ -1,6 +1,7 @@
-# BaseMachina Terraform Modules
+# BaseMachina Bridge Terraform サンプル
 
-BaseMachina BridgeをAWS・GCPクラウド環境に簡単にデプロイするためのTerraformモジュール集です。
+BaseMachina BridgeをAWS・GCPクラウド環境にデプロイするためのTerraformサンプルです。
+このリポジトリをフォークまたは参考にして、自社環境へのBridgeデプロイにご利用ください。
 
 ## プロジェクト概要
 
@@ -35,7 +36,7 @@ BaseMachina Bridgeは、BaseMachinaからお客様のプライベートデータ
 
 #### 前提条件
 
-- Terraform >= 1.0
+- Terraform >= 1.5
 - AWS CLI v2.x
 - 既存のVPCとサブネット（パブリック・プライベート）
 - BaseMachinaテナントID
@@ -75,7 +76,7 @@ module "bridge" {
 
 #### 前提条件
 
-- Terraform >= 1.0
+- Terraform >= 1.5
 - gcloud CLI
 - GCPプロジェクト（必要なAPIを有効化）
 - BaseMachinaテナントID
