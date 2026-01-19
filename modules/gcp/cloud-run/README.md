@@ -26,7 +26,7 @@
    gcloud services enable dns.googleapis.com  # DNS統合を使用する場合
    ```
 3. **VPCネットワーク**: Cloud SQLやその他のプライベートリソースに接続する場合、VPCネットワークとサブネットを事前に作成
-4. **Terraform**: バージョン1.0以上
+4. **Terraform**: バージョン1.5以上
 5. **Google Cloud Provider**: バージョン5.0以上
 6. **Tenant ID**: BaseMachinaから提供されるテナントID
 
@@ -85,7 +85,7 @@ module "basemachina_bridge" {
   # Direct VPC Egress（推奨）
   vpc_network_id    = "projects/my-project/global/networks/my-vpc"
   vpc_subnetwork_id = "projects/my-project/regions/asia-northeast1/subnetworks/my-subnet"
-  vpc_egress        = "private-ranges-only"
+  vpc_egress        = "PRIVATE_RANGES_ONLY"
 }
 ```
 
@@ -166,7 +166,7 @@ Direct VPC Egressを使用する場合、以下を確認してください：
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | ~> 5.0 |
 
 ## Providers

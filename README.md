@@ -35,7 +35,7 @@ BaseMachina Bridgeは、BaseMachinaからお客様のプライベートデータ
 
 #### 前提条件
 
-- Terraform >= 1.0
+- Terraform >= 1.5
 - AWS CLI v2.x
 - 既存のVPCとサブネット（パブリック・プライベート）
 - BaseMachinaテナントID
@@ -75,7 +75,7 @@ module "bridge" {
 
 #### 前提条件
 
-- Terraform >= 1.0
+- Terraform >= 1.5
 - gcloud CLI
 - GCPプロジェクト（必要なAPIを有効化）
 - BaseMachinaテナントID
